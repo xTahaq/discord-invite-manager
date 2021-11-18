@@ -1,4 +1,5 @@
 const { MessageEmbed } = require("discord.js")
+const {prefix} = require("../../config.js")
 module.exports = {
     name: "help",
     aliases: ["h"],
@@ -42,14 +43,14 @@ function getCMD(client, message, input) {
 
     let info = `No information found for command **${input.toLowerCase()}**`;
 
-    if (!cmd || input === "eval" || input === "e") {
+    if (!cmd) {
         return message.channel.send(`No information found for command **${input.toLowerCase()}**`)
     }
 
     if (cmd.name) info = `**Command name**: ${cmd.name}`;
     if (cmd.aliases) info += `\n**Aliases**: ${cmd.aliases.map(a => `\`${a}\``).join(", ")}`;
     if (cmd.description) info +=  `\n**Description**: ${cmd.description}`;
-    if (cmd.usage) info += `\n**Usage**: ${cmd.usage}`;
+    if (cmd.usage) info += `\n**Usage**: ${prefix}${cmd.usage}`;
     if (cmd.example) info += `\n**Example:** ${cmd.examples}`;
     if (cmd.cooldown) info += `\n**Cooldown:** ${cmd.cooldown} seconds`;
     embed.setDescription(info)

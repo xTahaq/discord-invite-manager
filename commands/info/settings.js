@@ -1,4 +1,5 @@
 const { MessageEmbed } = require("discord.js")
+const {prefix} = require("../../config.js")
 module.exports = {
     name: "settings",
     category: "info",
@@ -11,10 +12,10 @@ module.exports = {
         const embed = new MessageEmbed()
             embed.setTitle("Settings")
             embed.addField("Introduction", "Hello! Thank you for using this bot. This is a customizable welcomer bot.")
-            embed.addField("Setting Up Channels", "You can do 't!setwelcomechannel <channel>' to set your welcome channel.\nYou can do 't!setleavechannel <channel>' to set your leave channel.\nIf you don't want to set a channel, you can type 'remove' instead of channel.")
+            embed.addField("Setting Up Channels", `You can do '${prefix}setwelcomechannel <channel>' to set your welcome channel.\nYou can do '${prefix}setleavechannel <channel>' to set your leave channel.\nIf you don't want to set a channel, you can type 'remove' instead of channel.`)
             embed.addField("Setting Up Messages", 
-            `Use 't!setwelcomemessage' to set a welcome message.
-            Use 't!setleavemessage' to set a leave message.
+            `Use '${prefix}setwelcomemessage' to set a welcome message.
+            Use '${prefix}setleavemessage' to set a leave message.
             You can use special functions too! For example:
             {user:name} just joined to the server! Welcome to {guild:name}. (Invited by {inviter:tag}) => Bob just joined to the server! Welcome to Vibing Server. (Invited by Wumpus#6969)`,
             false)
