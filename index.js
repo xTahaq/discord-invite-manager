@@ -4,7 +4,7 @@ const fs = require("fs");
 const client = new Client();
 client.login(token);
 const guildInvites = new Map();
-client.version = "v1.0"
+client.version = "v1.1"
 const mongoose = require("mongoose")
 mongoose.connect(mongodb, {useNewUrlParser: true, useUnifiedTopology: true})
 const Data = require("./data.js")
