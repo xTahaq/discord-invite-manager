@@ -53,7 +53,7 @@ client.on('guildMemberAdd', async member => {
             if (err) console.log(err)
             if (!data) {
                 const newData = new Data({
-                    server: guild.id,
+                    server: member.guild.id,
                     welcomeC: null,
                     leaveC: null,
                     welcomeM: "{user:tag} has joined to the server. Invited by {inviter:tag} [Invite Uses: {invite:uses}]",
@@ -92,7 +92,7 @@ client.on('guildMemberRemove', async member => {
         if (err) console.log(err)
         if (!data) {
             const newData = new Data({
-                server: guild.id,
+                server: member.guild.id,
                 welcomeC: null,
                 leaveC: null,
                 welcomeM: "{user:tag} has joined to the server. Invited by {inviter:tag} [Invite Uses: {invite:uses}]",

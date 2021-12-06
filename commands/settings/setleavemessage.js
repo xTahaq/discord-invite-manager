@@ -18,7 +18,7 @@ module.exports = {
             if (err) return message.channel.send(":warning: Database error: " + err)
             if (!data) {
                 const newData = new Data({
-                    server: guild.id,
+                    server: message.member.guild.id,
                     welcomeC: null,
                     leaveC: null,
                     welcomeM: "{user:tag} has joined to the server. Invited by {inviter:tag} [Invite Uses: {invite:uses}]",

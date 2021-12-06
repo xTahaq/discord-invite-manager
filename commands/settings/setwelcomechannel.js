@@ -19,7 +19,7 @@ module.exports = {
                     if (err) return message.channel.send(":warning: Database error: " + err)
                     if (!data) {
                         const newData = new Data({
-                            server: guild.id,
+                            server: message.member.guild.id,
                             welcomeC: "null",
                             leaveC: null,
                             welcomeM: "{user:tag} has joined to the server. Invited by {inviter:tag} [Invite Uses: {invite:uses}]",
@@ -41,14 +41,14 @@ module.exports = {
                 if (err) return message.channel.send(":warning: Database error: " + err)
                 if (!data) {
                     const newData = new Data({
-                        server: guild.id,
+                        server: message.member.guild.id,
                         welcomeC: targetchannel.id,
                         leaveC: null,
                         welcomeM: "{user:tag} has joined to the server. Invited by {inviter:tag} [Invite Uses: {invite:uses}]",
                         leaveM: "{user:tag} has left the server."
                     })
                     newData.save().catch(err => console.log(err))
-                    return message.channel.send("Setted welcome channel: `null`")
+                    return message.channel.send("Setted welcome channel: " + args[0])
                 }
                 data.welcomeC = targetchannel.id
                 data.save().catch(err => console.log(err))
