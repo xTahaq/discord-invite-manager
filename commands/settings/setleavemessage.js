@@ -16,10 +16,20 @@ module.exports = {
         if (lmessage.length > 1024) return message.channel.send("Leave message cannot be longer than 1024 words.")
         Data.findOne({server:message.member.guild.id}, (err, data) => {
             if (err) return message.channel.send(":warning: Database error: " + err)
-            if (!data) new Error("Guild database not found! Please report this error very quickly!")
+            if (!data) {
+                const newData = new Data({
+                    server: message.member.guild.id,
+                    welcomeC: null,
+                    leaveC: null,
+                    welcomeM: "{user:tag} has joined to the server. Invited by {inviter:tag} [Invite Uses: {invite:uses}]",
+                    leaveM: lmessage
+                })
+                newData.save().catch(err => console.log(err))
+                return message.channel.send("Leave message is set: " + lmessage)
+            }
             data.leaveM = lmessage
             data.save().catch(err => console.log(err))
-            message.channel.send("Leave message is set: " + data.leaveM)
+            return message.channel.send("Leave message is set: " + lmessage)
         })
     }
 }

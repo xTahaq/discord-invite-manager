@@ -1,6 +1,6 @@
 {
   "name": "discordinvitemanager",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "A discord bot which tracks who invited who with join messages.",
   "main": "index.js",
   "scripts": {

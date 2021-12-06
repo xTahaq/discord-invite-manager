@@ -4,7 +4,7 @@ const fs = require("fs");
 const client = new Client();
 client.login(token);
 const guildInvites = new Map();
-client.version = "v1.0"
+client.version = "v1.1"
 const mongoose = require("mongoose")
 mongoose.connect(mongodb, {useNewUrlParser: true, useUnifiedTopology: true})
 const Data = require("./data.js")
@@ -51,7 +51,17 @@ client.on('guildMemberAdd', async member => {
         const usedInvite = newInvites.find(inv => cachedInvites.get(inv.code).uses < inv.uses);
         Data.findOne({server:member.guild.id}, (err, data) => {
             if (err) console.log(err)
-            if (!data) return console.log("WARNING: Data not found for the guild: " + member.guild.name)
+            if (!data) {
+                const newData = new Data({
+                    server: member.guild.id,
+                    welcomeC: null,
+                    leaveC: null,
+                    welcomeM: "{user:tag} has joined to the server. Invited by {inviter:tag} [Invite Uses: {invite:uses}]",
+                    leaveM: "{user:tag} has left the server."
+                })
+                newData.save().catch(err => console.log(err))
+                return
+            }
             if (data.welcomeC === "null") return
             let welcometext = data.welcomeM
             welcometext = welcometext.replace(/{user:name}/g, member.user.username)
@@ -80,7 +90,17 @@ client.on('guildMemberAdd', async member => {
 client.on('guildMemberRemove', async member => {
     Data.findOne({server:member.guild.id}, (err, data) => {
         if (err) console.log(err)
-        if (!data) return console.log("WARNING: Data not found for the guild: " + member.guild.name)
+        if (!data) {
+            const newData = new Data({
+                server: member.guild.id,
+                welcomeC: null,
+                leaveC: null,
+                welcomeM: "{user:tag} has joined to the server. Invited by {inviter:tag} [Invite Uses: {invite:uses}]",
+                leaveM: "{user:tag} has left the server."
+            })
+            newData.save().catch(err => console.log(err))
+            return
+        }
         if (data.leaveC === "null") return
         let leavetext = data.leaveM
         leavetext = leavetext.replace(/{user:name}/g, member.user.username)
