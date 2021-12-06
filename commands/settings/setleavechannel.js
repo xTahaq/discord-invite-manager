@@ -17,22 +17,41 @@ module.exports = {
             if (args[0] === "remove") {
                 Data.findOne({server:message.member.guild.id}, (err, data) => {
                     if (err) return message.channel.send(":warning: Database error: " + err)
-                    if (!data) new Error("Guild database not found! Please report this error very quickly!")
+                    if (!data) {
+                        const newData = new Data({
+                            server: guild.id,
+                            welcomeC: null,
+                            leaveC: "null",
+                            welcomeM: "{user:tag} has joined to the server. Invited by {inviter:tag} [Invite Uses: {invite:uses}]",
+                            leaveM: "{user:tag} has left the server."
+                        })
+                        newData.save().catch(err => console.log(err))
+                        return message.channel.send("Setted leave channel: `null`")
+                    }
                     data.leaveC = "null"
                     data.save().catch(err => console.log(err))
-                    message.channel.send("Setted leave channel: `null`")
+                    return message.channel.send("Setted leave channel: `null`")
                 })
-                return
             } else {
                 message.channel.send("Invalid command usage. Please mention a channel or type 'remove'.")
             }
         } else {
             Data.findOne({server:message.member.guild.id}, (err, data) => {
                 if (err) return message.channel.send(":warning: Database error: " + err)
-                if (!data) new Error("Guild database not found! Please report this error very quickly!")
+                if (!data) {
+                    const newData = new Data({
+                        server: guild.id,
+                        welcomeC: null,
+                        leaveC: targetchannel.id,
+                        welcomeM: "{user:tag} has joined to the server. Invited by {inviter:tag} [Invite Uses: {invite:uses}]",
+                        leaveM: "{user:tag} has left the server."
+                    })
+                    newData.save().catch(err => console.log(err))
+                    return message.channel.send("Setted leave channel: " + args[0])
+                }
                 data.leaveC = targetchannel.id
                 data.save().catch(err => console.log(err))
-                message.channel.send("Setted leave channel: " + args[0])
+                return message.channel.send("Setted leave channel: " + args[0])
             })
         }
     }

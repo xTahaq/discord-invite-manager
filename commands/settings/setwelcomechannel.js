@@ -17,10 +17,20 @@ module.exports = {
             if (args[0] === "remove") {
                 Data.findOne({server:message.member.guild.id}, (err, data) => {
                     if (err) return message.channel.send(":warning: Database error: " + err)
-                    if (!data) new Error("Guild database not found! Please report this error very quickly!")
+                    if (!data) {
+                        const newData = new Data({
+                            server: guild.id,
+                            welcomeC: "null",
+                            leaveC: null,
+                            welcomeM: "{user:tag} has joined to the server. Invited by {inviter:tag} [Invite Uses: {invite:uses}]",
+                            leaveM: "{user:tag} has left the server."
+                        })
+                        newData.save().catch(err => console.log(err))
+                        return message.channel.send("Setted welcome channel: `null`")
+                    }
                     data.welcomeC = "null"
                     data.save().catch(err => console.log(err))
-                    message.channel.send("Setted welcome channel: `null`")
+                    return message.channel.send("Setted welcome channel: `null`")
                 })
                 return
             } else {
@@ -29,10 +39,20 @@ module.exports = {
         } else {
             Data.findOne({server:message.member.guild.id}, (err, data) => {
                 if (err) return message.channel.send(":warning: Database error: " + err)
-                if (!data) new Error("Guild database not found! Please report this error very quickly!")
+                if (!data) {
+                    const newData = new Data({
+                        server: guild.id,
+                        welcomeC: targetchannel.id,
+                        leaveC: null,
+                        welcomeM: "{user:tag} has joined to the server. Invited by {inviter:tag} [Invite Uses: {invite:uses}]",
+                        leaveM: "{user:tag} has left the server."
+                    })
+                    newData.save().catch(err => console.log(err))
+                    return message.channel.send("Setted welcome channel: `null`")
+                }
                 data.welcomeC = targetchannel.id
                 data.save().catch(err => console.log(err))
-                message.channel.send("Setted welcome channel: " + args[0])
+                return message.channel.send("Setted welcome channel: " + args[0])
             })
         }
     }
